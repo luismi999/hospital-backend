@@ -22,13 +22,34 @@ dbConnection();
 //Rutas
 
 /* 
-usuario 
-*/
-app.use( '/api/usuarios', require( './routes/usuarios' ) );
-/* 
 login 
 */
 app.use( '/api/login', require( './routes/auth' ) );
+
+/* 
+usuarios
+*/
+app.use( '/api/usuarios', require( './routes/usuarios' ) );
+
+/* 
+hospitales 
+*/
+app.use( '/api/hospitales', require( './routes/hospitales' ) );
+
+/* 
+medicos 
+*/
+app.use( '/api/medicos', require( './routes/medicos' ) );
+
+/* 
+busquedas
+*/
+app.use( '/api/todo', require( './routes/busquedas' ) );
+
+/* 
+uploads
+*/
+app.use( '/api/upload', require( './routes/uploads' ) );
 
 app.listen(process.env.PORT, () => {
     console.log('Servidor express corriendo en puerto ' + process.env.PORT);

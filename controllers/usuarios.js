@@ -9,14 +9,23 @@ const { crearJWT } = require('../helpers/jwt');
 /* creamos nuestra funcion get para obtener usuarios de nuestra BD */
 const getUsuarios = async ( req, res = response ) => {
     /* buscamos todos los usuarios, solo extrayendo nombre, email, role y google */
-    const usuarios = await Usuario.find({}, 'nombre email role google');
+
+    const desde = req.query.desde;
+
+    const [ usuarios, total ] = await Promise.all([
+        Usuario.find({}, 'nombre email role google img')
+                                  .skip( desde )
+                                  .limit( 5 ),
+        Usuario.count()
+    ])
 
     const uid = req.uid;
     /* regresamos la respuesta como un objeto json */
     res.json( {
         ok: true,
         usuarios,
-        uid
+        uid,
+        total
     } );
 }
 

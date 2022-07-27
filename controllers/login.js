@@ -41,8 +41,9 @@ const login =  async ( req, res = response ) => {
             });
         }
 
+        /* creamos nuestro json web token de nuestro helper mandando el uid del login */
         const token = await crearJWT( usuarioDB.id );
-
+        /* mandamos la respuesta de que todo salio correcto */
         res.json({
             ok: true,
             token
@@ -54,10 +55,10 @@ const login =  async ( req, res = response ) => {
             ok: false,
             msg: 'Habla con el administrador'
         })
-
     }
 }
 
+/* exportamos nuestra funcion de login */
 module.exports = {
     login
 }

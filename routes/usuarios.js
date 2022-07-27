@@ -18,7 +18,7 @@ const router = Router();
 /* 
 creamos la ruta / para realizar el get de usuarios 
 */
-router.get( '/', validarJWT , getUsuarios );
+router.get( '/', getUsuarios );
 
 /* 
 creamos la ruta / para el post de usuario 
