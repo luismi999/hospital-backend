@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 /* importamos nuestro objeto Usuario */
 const Usuario = require( '../models/usuario' );
 const { crearJWT } = require('../helpers/jwt');
+const { googleVerify } = require('../helpers/google.verify'); 
  
 /* creamos la funcion de login */
 const login =  async ( req, res = response ) => {
@@ -58,7 +59,57 @@ const login =  async ( req, res = response ) => {
     }
 }
 
+const googleSignIn = async( req, res = response ) => {
+
+    
+    try {
+
+        const { email, name, picture } = await googleVerify( req.body.token );
+
+        const usuarioDB = await Usuario.findOne({ email });
+        let usuario;
+
+        if ( !usuarioDB ) {
+
+            usuario = new Usuario({
+                nombre: name,
+                email,
+                password: '@@@',
+                img: picture,
+                google: true
+            });
+
+        }else {
+            usuario = usuarioDB;
+            usuario.google = true;
+        }
+
+        /* Guardar usuario */
+        await usuario.save();
+
+        /* creamos el jwt */
+         const token = await crearJWT( usuario.id );
+
+        res.json({
+            ok: true,
+            name, email, picture,
+            token
+        })
+        
+    } catch (error) {
+        
+    }
+
+
+    res.json({
+        ok:true,
+        msg: req.body.token
+    })
+
+}
+
 /* exportamos nuestra funcion de login */
 module.exports = {
-    login
+    login,
+    googleSignIn
 }
