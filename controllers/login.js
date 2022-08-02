@@ -98,12 +98,24 @@ const googleSignIn = async( req, res = response ) => {
         
     } catch (error) {
         
-    }
+        response.status(400).json({
+            ok: false,
+            msg: 'Hable con el administrador!'
+        })
 
+    }
+}
+
+const renewToken = async (req, res = response) => {
+
+    const uid = req.uid;
+
+    /* creamos el jwt */
+    const token = await crearJWT( uid );
 
     res.json({
-        ok:true,
-        msg: req.body.token
+        ok: true,
+        token
     })
 
 }
@@ -111,5 +123,6 @@ const googleSignIn = async( req, res = response ) => {
 /* exportamos nuestra funcion de login */
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    renewToken
 }

@@ -32,11 +32,15 @@ router.post( '/', [
 /* 
 creamos la ruta mandando el parametro ID para actualizar al Hospital 
 */
-router.put('/:id', [], actualizarHospital);
+router.put('/:id', [
+    validarJWT,
+    check('nombre','El nombre del hospital es obligatorio!').not().isEmpty(),
+    validarCampos
+], actualizarHospital);
 
 /* 
 creamos la ruta para eliminar Hospitals 
 */
-router.delete('/:id', eliminarHospital );
+router.delete('/:id', validarJWT, eliminarHospital );
 /* exportamos el router para que pueda ser utilizado en otro lugar */
 module.exports = router;
